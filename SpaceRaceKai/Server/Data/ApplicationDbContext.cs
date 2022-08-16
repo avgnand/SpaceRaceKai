@@ -13,5 +13,11 @@ namespace SpaceRaceKai.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Colony> Colonies { get; set; }
+        public DbSet<PlanetType> PlanetTypes { get; set; }
+        public DbSet<EventEffect> EventEffects { get; set; }
+        public DbSet<WorldEvent> WorldEvents { get; set; }
+        public DbSet<DecisionEvent> DecisionEvents { get; set; }
     }
 }
