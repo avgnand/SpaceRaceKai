@@ -25,4 +25,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Colony\" />
+    <Folder Include="Services\EventEffect\" />
+    <Folder Include="Services\DecisionEvent\" />
+    <Folder Include="Services\WorldEvent\" />
+  </ItemGroup>
+
 </Project>
