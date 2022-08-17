@@ -69,27 +69,6 @@ namespace SpaceRaceKai.Server.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorldEvents",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventEffectId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorldEvents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorldEvents_EventEffects_EventEffectId",
-                        column: x => x.EventEffectId,
-                        principalTable: "EventEffects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Colonies",
                 columns: table => new
                 {
@@ -115,6 +94,34 @@ namespace SpaceRaceKai.Server.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WorldEvents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlanetTypeId = table.Column<int>(type: "int", nullable: false),
+                    EventEffectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorldEvents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorldEvents_EventEffects_EventEffectId",
+                        column: x => x.EventEffectId,
+                        principalTable: "EventEffects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorldEvents_PlanetTypes_PlanetTypeId",
+                        column: x => x.PlanetTypeId,
+                        principalTable: "PlanetTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Colonies_PlanetTypeId",
                 table: "Colonies",
@@ -134,6 +141,11 @@ namespace SpaceRaceKai.Server.Data.Migrations
                 name: "IX_WorldEvents_EventEffectId",
                 table: "WorldEvents",
                 column: "EventEffectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorldEvents_PlanetTypeId",
+                table: "WorldEvents",
+                column: "PlanetTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -148,10 +160,10 @@ namespace SpaceRaceKai.Server.Data.Migrations
                 name: "WorldEvents");
 
             migrationBuilder.DropTable(
-                name: "PlanetTypes");
+                name: "EventEffects");
 
             migrationBuilder.DropTable(
-                name: "EventEffects");
+                name: "PlanetTypes");
         }
     }
 }

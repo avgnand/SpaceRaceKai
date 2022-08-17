@@ -507,9 +507,14 @@ namespace SpaceRaceKai.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PlanetTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EventEffectId");
+
+                    b.HasIndex("PlanetTypeId");
 
                     b.ToTable("WorldEvents");
                 });
@@ -603,7 +608,15 @@ namespace SpaceRaceKai.Server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SpaceRaceKai.Server.Models.PlanetType", "PlanetType")
+                        .WithMany()
+                        .HasForeignKey("PlanetTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("EventEffect");
+
+                    b.Navigation("PlanetType");
                 });
 #pragma warning restore 612, 618
         }

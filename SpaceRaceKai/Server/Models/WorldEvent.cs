@@ -14,9 +14,13 @@ namespace SpaceRaceKai.Server.Models
         [Required]
         public string? Description { get; set; }
 
+        [ForeignKey(nameof(PlanetType))]
+        public int PlanetTypeId { get; set; }
+
         [ForeignKey(nameof(EventEffect))]
         public int EventEffectId { get; set; }
 
+        public virtual PlanetType PlanetType { get; set; }
         public virtual EventEffect EventEffect { get; set; }
 
     }
