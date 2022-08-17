@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Colony\" />
     <Folder Include="Services\EventEffect\" />
     <Folder Include="Services\DecisionEvent\" />
     <Folder Include="Services\WorldEvent\" />
