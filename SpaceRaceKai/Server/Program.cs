@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SpaceRaceKai.Server.Data;
 using SpaceRaceKai.Server.Models;
 using SpaceRaceKai.Server.Services.Colony;
+using SpaceRaceKai.Server.Services.EventEffect;
 using SpaceRaceKai.Server.Services.PlanetType;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<IPlanetTypeService, PlanetTypeService>();
 builder.Services.AddScoped<IColonyService, ColonyService>();
+builder.Services.AddScoped<IEventEffectService, EventEffectService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
