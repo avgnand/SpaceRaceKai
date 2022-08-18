@@ -6,6 +6,7 @@ using SpaceRaceKai.Server.Models;
 using SpaceRaceKai.Server.Services.Colony;
 using SpaceRaceKai.Server.Services.EventEffect;
 using SpaceRaceKai.Server.Services.PlanetType;
+using SpaceRaceKai.Server.Services.WorldEvent;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IPlanetTypeService, PlanetTypeService>();
 builder.Services.AddScoped<IColonyService, ColonyService>();
 builder.Services.AddScoped<IEventEffectService, EventEffectService>();
+builder.Services.AddScoped<IWorldEventService, WorldEventService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();

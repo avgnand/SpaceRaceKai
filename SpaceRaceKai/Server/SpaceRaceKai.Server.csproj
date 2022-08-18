@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Services\DecisionEvent\" />
-    <Folder Include="Services\WorldEvent\" />
   </ItemGroup>
 
 </Project>
