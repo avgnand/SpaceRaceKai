@@ -4,7 +4,7 @@
 
 namespace SpaceRaceKai.Server.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class AddEntities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,11 +81,18 @@ namespace SpaceRaceKai.Server.Data.Migrations
                     IndustryLevel = table.Column<int>(type: "int", nullable: false),
                     WealthLevel = table.Column<int>(type: "int", nullable: false),
                     Playthroughs = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PlanetTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Colonies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Colonies_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Colonies_PlanetTypes_PlanetTypeId",
                         column: x => x.PlanetTypeId,
@@ -126,6 +133,11 @@ namespace SpaceRaceKai.Server.Data.Migrations
                 name: "IX_Colonies_PlanetTypeId",
                 table: "Colonies",
                 column: "PlanetTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Colonies_UserId",
+                table: "Colonies",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DecisionEvents_EventEffectIdA",

@@ -24,6 +24,7 @@ namespace SpaceRaceKai.Server.Services.Colony
                 IndustryLevel = model.IndustryLevel,
                 WealthLevel = model.WealthLevel,
                 Playthroughs = 0,
+                UserId = model.UserId,
                 PlanetTypeId = model.PlanetTypeId
             };
             _context.Colonies.Add(colony);
@@ -38,6 +39,7 @@ namespace SpaceRaceKai.Server.Services.Colony
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    UserId = c.UserId,
                     PlanetTypeName = c.PlanetType.Name
                 });
             return await colonies.ToListAsync();
@@ -57,6 +59,8 @@ namespace SpaceRaceKai.Server.Services.Colony
                 IndustryLevel = colony.IndustryLevel,
                 WealthLevel = colony.WealthLevel,
                 Playthroughs = colony.Playthroughs,
+                UserId = colony.UserId,
+                UserEmail = colony.User.Email,
                 PlanetTypeId = colony.PlanetTypeId,
                 PlanetTypeName = colony.PlanetType.Name
             };

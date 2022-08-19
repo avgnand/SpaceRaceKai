@@ -24,6 +24,11 @@ namespace SpaceRaceKai.Server.Models
 
         public int Playthroughs { get; set; }
 
+        [ForeignKey(nameof(User))]
+        public string? UserId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
+
         [ForeignKey(nameof(PlanetType))]
         public int PlanetTypeId { get; set; }
 

@@ -396,12 +396,18 @@ namespace SpaceRaceKai.Server.Data.Migrations
                     b.Property<int>("TechLevel")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("WealthLevel")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PlanetTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Colonies");
                 });
@@ -578,7 +584,15 @@ namespace SpaceRaceKai.Server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SpaceRaceKai.Server.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("PlanetType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SpaceRaceKai.Server.Models.DecisionEvent", b =>
