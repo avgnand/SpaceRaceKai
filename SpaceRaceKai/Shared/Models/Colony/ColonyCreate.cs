@@ -23,6 +23,9 @@ namespace SpaceRaceKai.Shared.Models.Colony
         public int WealthLevel { get; set; }
 
         [Required]
+        public string? UserId { get; set; }
+
+        [Required]
         public int PlanetTypeId { get; set; }
     }
 }
