@@ -48,8 +48,8 @@ namespace SpaceRaceKai.Server.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventEffectIdA = table.Column<int>(type: "int", nullable: false),
-                    EventEffectIdB = table.Column<int>(type: "int", nullable: false)
+                    EventEffectIdA = table.Column<int>(type: "int", nullable: true),
+                    EventEffectIdB = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,13 +59,13 @@ namespace SpaceRaceKai.Server.Data.Migrations
                         column: x => x.EventEffectIdA,
                         principalTable: "EventEffects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_DecisionEvents_EventEffects_EventEffectIdB",
                         column: x => x.EventEffectIdB,
                         principalTable: "EventEffects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
