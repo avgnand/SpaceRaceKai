@@ -1,0 +1,53 @@
+﻿@page "/planettype/delete/{PlanetTypeId:int}"
+@using SpaceRaceKai.Shared.Models.PlanetType
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Delete Planet Type #@PlanetType.Id-@PlanetType.Name</h3>
+
+@if (Message != null)
+{
+    <h2>@Message</h2>
+}
+@if (PlanetType != null)
+{
+    <div>
+        <p><strong>Details</strong></p>
+        <p>Temperature Rating: @PlanetType.TemperatureRating degrees</p>
+        <p>Land Cover: @PlanetType.LandCover% of planet's surface</p>
+        <div>
+            <a href="/planettype">Return to Planet Types</a>
+            <a href="#" @onclick="HandleClick">DELETE</a>
+        </div>
+    </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int PlanetTypeId { get; set; }
+
+    public PlanetTypeDetail PlanetType { get; set; }
+    public string? Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PlanetType = await http.GetFromJsonAsync<PlanetTypeDetail>($"/api/planettype/{PlanetTypeId}");
+    }
+
+    private async void HandleClick()
+    {
+        var response = await http.DeleteAsync($"/api/planettype/{PlanetTypeId}");
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/planettype");
+        }
+        else
+        {
+            Message = $"Planet type '{PlanetType?.Name}' (ID:{PlanetType?.Id}) could not be deleted.";
+        }
+    }
+}

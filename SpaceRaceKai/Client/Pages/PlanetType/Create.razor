@@ -1,0 +1,55 @@
+﻿@page "/planettype/create"
+@using SpaceRaceKai.Shared.Models.PlanetType
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+else
+{
+    <div>
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <div>
+                <label>Name</label>
+                <InputText @bind-Value="model.Name" />
+            </div>
+            <div>
+                <label>Temperature Rating</label>
+                <InputNumber @bind-Value="model.TemperatureRating" />
+            </div>
+            <div>
+                <label>Land Cover</label>
+                <InputNumber @bind-Value="model.LandCover" />
+            </div>
+            <button type="submit">Create</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private string? errorMessage;
+    private PlanetTypeCreate model = new();
+
+    private async void HandleSubmit()
+    {
+        // Reformat numeric values before posting model
+        if (model.TemperatureRating >= 1000) model.TemperatureRating = 999;
+        if (model.TemperatureRating <= -1000) model.TemperatureRating = -999;
+        if (model.LandCover > 100) model.LandCover = 100;
+        if (model.LandCover < 0) model.LandCover = 0;
+
+        var response = await http.PostAsJsonAsync<PlanetTypeCreate>("/api/planettype", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/planettype");
+        }
+        else
+        {
+            errorMessage = "Your planet type could not be created right now. Please try again later.";
+        }
+    }
+}

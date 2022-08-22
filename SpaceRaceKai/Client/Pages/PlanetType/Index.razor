@@ -1,0 +1,46 @@
+﻿@page "/planettype"
+@using SpaceRaceKai.Shared.Models.PlanetType
+@inject HttpClient http
+
+<h3>Index</h3>
+<a href="/planettype/create">Create a new planet type</a>
+
+@if (planettypes is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PlanetTypeListItem item in planettypes)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <a href=@($"planettype/{item.Id}")>Details</a>
+                        <a href=@($"planettype/edit/{item.Id}")>Edit</a>
+                        <a href=@($"planettype/delete/{item.Id}")>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PlanetTypeListItem> planettypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        planettypes = await http.GetFromJsonAsync<List<PlanetTypeListItem>>("api/planettype");
+    }
+}

@@ -1,0 +1,54 @@
+﻿@page "/planettype/edit/{PlanetTypeId:int}"
+@using SpaceRaceKai.Shared.Models.PlanetType
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Edit</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+<div>
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div>
+            <label>Name</label>
+            <InputText @bind-Value="model.Name" />
+        </div>
+        <div>
+            <label>Temperature Rating</label>
+            <InputNumber @bind-Value="model.TemperatureRating" />
+        </div>
+        <div>
+            <label>Land Cover</label>
+            <InputNumber @bind-Value="model.LandCover" />
+        </div>
+        <button type="submit">Confirm</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int PlanetTypeId { get; set; }
+
+    private PlanetTypeEdit model = new();
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<PlanetTypeEdit>($"/api/planettype/{PlanetTypeId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PutAsJsonAsync<PlanetTypeEdit>($"/api/planettype/edit/{PlanetTypeId}", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/planettype/{PlanetTypeId}");
+        }
+        else
+        {
+            errorMessage = $"Changes to Planet Type '{model.Name}' (ID: {model.Id}) could not be saved.";
+        }
+    }
+}
