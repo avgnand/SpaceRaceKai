@@ -1,5 +1,70 @@
-﻿<h3>Edit</h3>
+﻿@page "/colony/edit/{ColonyId:int}"
+@using SpaceRaceKai.Shared.Models.Colony
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Edit</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+<div>
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div>
+            <label>Name</label>
+            <InputText @bind-Value="model.Name" />
+        </div>
+        <div>
+            <label>Population</label>
+            <InputNumber @bind-Value="model.Population" />
+        </div>
+        <div>
+            <label>Approval Rating</label>
+            <InputNumber @bind-Value="model.ApprovalRating" />
+        </div>
+        <div>
+            <label>Tech Level</label>
+            <InputNumber @bind-Value="model.TechLevel" />
+        </div>
+        <div>
+            <label>Industry Level</label>
+            <InputNumber @bind-Value="model.TechLevel" />
+        </div>
+        <div>
+            <label>Wealth Level</label>
+            <InputNumber @bind-Value="model.WealthLevel" />
+        </div>
+        <div>
+            <label>Planet Type ID</label>
+            <InputNumber @bind-Value="model.PlanetTypeId" />
+        </div>
+        <button type="submit">Confirm</button>
+    </EditForm>
+</div>
 
 @code {
+    [Parameter]
+    public int ColonyId { get; set; }
 
+    private ColonyEdit model = new();
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<ColonyEdit>($"/api/colony/{ColonyId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PutAsJsonAsync<ColonyEdit>($"/api/colony/edit/{ColonyId}", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/colony/{ColonyId}");
+        }
+        else
+        {
+            errorMessage = $"Changes to Colony '{model.Name}' (ID: {model.Id}) could not be saved.";
+        }
+    }
 }

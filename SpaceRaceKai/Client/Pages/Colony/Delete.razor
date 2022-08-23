@@ -1,5 +1,66 @@
-﻿<h3>Delete</h3>
+﻿@page "/colony/delete/{ColonyId:int}"
+@using SpaceRaceKai.Shared.Models.Colony
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Delete Colony #@Model.Id-@Model.Name</h3>
+
+@if (Message != null)
+{
+    <h2>@Message</h2>
+}
+@if (Model != null)
+{
+    <div>
+        <p><strong>Details</strong></p>
+        <p>User: [ID: @Model.UserId] @Model.UserEmail</p>
+        <p>Planet Type: [ID: @Model.PlanetTypeId] @Model.PlanetTypeName</p>
+        <p>Playthroughs: @Model.Playthroughs</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Population</th>
+                    <th>Approval Rating</th>
+                    <th>Tech Level</th>
+                    <th>Industry Level</th>
+                    <th>Wealth Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Population</td>
+                    <td>@Model.ApprovalRating</td>
+                    <td>@Model.TechLevel</td>
+                    <td>@Model.IndustryLevel</td>
+                    <td>@Model.WealthLevel</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
 
 @code {
+    [Parameter]
+    public int ColonyId { get; set; }
 
+    public ColonyDetail Model { get; set; } = new();
+    public string? Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await http.GetFromJsonAsync<ColonyDetail>($"/api/colony/{ColonyId}");
+    }
+
+    private async void HandleClick()
+    {
+        var response = await http.DeleteAsync($"/api/colony/{ColonyId}");
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/colony");
+        }
+        else
+        {
+            Message = $"Colony '{Model.Name}' (ID: {Model.Id}) could not be deleted.";
+        }
+    }
 }

@@ -30,7 +30,7 @@ else
     [Parameter]
     public int PlanetTypeId { get; set; }
 
-    public PlanetTypeDetail PlanetType { get; set; }
+    public PlanetTypeDetail PlanetType { get; set; } = new();
     public string? Message { get; set; }
 
     protected override async Task OnInitializedAsync()
