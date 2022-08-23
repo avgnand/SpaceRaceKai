@@ -36,7 +36,15 @@
                 </tr>
             </tbody>
         </table>
+        <div>
+            <a href="/colony">Return to Colonies</a>
+            <a href="#" @onclick="HandleClick">DELETE</a>
+        </div>
     </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
 }
 
 @code {

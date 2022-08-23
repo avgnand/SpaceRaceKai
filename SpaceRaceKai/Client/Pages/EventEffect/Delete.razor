@@ -14,7 +14,15 @@
     <div>
         <p><strong>Details</strong></p>
         <EventEffectTable model=@model />
+        <div>
+            <a href="/eventeffect">Return to Event Effects</a>
+            <a href="#" @onclick="HandleClick">DELETE</a>
+        </div>
     </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
 }
 
 @code {
