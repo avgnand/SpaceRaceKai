@@ -1,0 +1,57 @@
+﻿@page "/eventeffect/create"
+@using SpaceRaceKai.Shared.Models.EventEffect
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+else
+{
+    <div>
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <div>
+                <label>Population Change</label>
+                <InputNumber @bind-Value="model.PopulationChange" />
+            </div>
+            <div>
+                <label>Approval Change</label>
+                <InputNumber @bind-Value="model.ApprovalChange" />
+            </div>
+            <div>
+                <label>Tech Change</label>
+                <InputNumber @bind-Value="model.TechChange" />
+            </div>
+            <div>
+                <label>Industry Change</label>
+                <InputNumber @bind-Value="model.IndustryChange" />
+            </div>
+            <div>
+                <label>Wealth Change</label>
+                <InputNumber @bind-Value="model.WealthChange" />
+            </div>
+            <button type="submit">Create</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private string? errorMessage;
+    private EventEffectCreate model = new();
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PostAsJsonAsync<EventEffectCreate>("/api/eventeffect", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/eventeffect");
+        }
+        else
+        {
+            errorMessage = "The event effect could not be created right now. Please try again later.";
+        }
+    }
+}

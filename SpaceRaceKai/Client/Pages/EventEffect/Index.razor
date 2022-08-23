@@ -1,0 +1,53 @@
+﻿@page "/eventeffect"
+@using SpaceRaceKai.Shared.Models.EventEffect
+@inject HttpClient http
+
+<h3>Index</h3>
+<a href="/eventeffect/create">Create a new Event Effect</a>
+
+@if (eventEffects is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Population Change</th>
+                <th>Approval Change</th>
+                <th>Tech Change</th>
+                <th>Industry Change</th>
+                <th>Wealth Change</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (EventEffectListItem item in eventEffects)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.PopulationChange</td>
+                    <td>@item.ApprovalChange</td>
+                    <td>@item.TechChange</td>
+                    <td>@item.IndustryChange</td>
+                    <td>@item.WealthChange</td>
+                    <td>
+                        <a href=@($"eventeffect/{item.Id}")>Details</a>
+                        <a href=@($"eventeffect/delete/{item.Id}")>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<EventEffectListItem> eventEffects = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        eventEffects = await http.GetFromJsonAsync<List<EventEffectListItem>>("api/eventeffect");
+    }
+}

@@ -1,0 +1,44 @@
+﻿@page "/eventeffect/delete/{EventEffectId:int}"
+@using SpaceRaceKai.Shared.Models.EventEffect
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Delete</h3>
+
+@if (Message != null)
+{
+    <h2>@Message</h2>
+}
+@if (model != null)
+{
+    <div>
+        <p><strong>Details</strong></p>
+        <EventEffectTable model=@model />
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int EventEffectId { get; set; }
+
+    public EventEffectDetail model = new();
+    public string? Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<EventEffectDetail>($"/api/eventeffect/{EventEffectId}");
+    }
+
+    private async void HandleClick()
+    {
+        var response = await http.DeleteAsync($"/api/eventeffect/{EventEffectId}");
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/eventeffect");
+        }
+        else
+        {
+            Message = $"Event Effect (ID: {model.Id}) could not be deleted.";
+        }
+    }
+}
