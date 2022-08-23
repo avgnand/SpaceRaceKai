@@ -1,0 +1,43 @@
+﻿@page "/worldevent"
+@using SpaceRaceKai.Shared.Models.WorldEvent
+@inject HttpClient http
+
+<h3>Index</h3>
+
+@if (worldEvents is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Planet Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (WorldEventListItem item in worldEvents)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.PlanetTypeName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<WorldEventListItem> worldEvents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        worldEvents = await http.GetFromJsonAsync<List<WorldEventListItem>>("api/worldevent");
+    }
+}

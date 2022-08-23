@@ -1,0 +1,52 @@
+﻿@page "/worldevent/delete/{WorldEventId:int}"
+@using SpaceRaceKai.Shared.Models.WorldEvent
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Delete</h3>
+
+@if (Message != null)
+{
+    <h2>@Message</h2>
+}
+@if (model != null)
+{
+    <div>
+        <p><strong>Details</strong></p>
+        <WorldEventTable model=@model />
+        <div>
+            <a href="/worldevent">Return to World Events</a>
+            <a href="#" @onclick="HandleClick">DELETE</a>
+        </div>
+    </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int WorldEventId { get; set; }
+
+    public WorldEventDetail model = new();
+    public string? Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<WorldEventDetail>($"/api/worldevent/{WorldEventId}");
+    }
+
+    private async void HandleClick()
+    {
+        var response = await http.DeleteAsync($"/api/worldevent/{WorldEventId}");
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/worldevent");
+        }
+        else
+        {
+            Message = $"World Event '{model.Name}' (ID: {model.Id}) could not be deleted.";
+        }
+    }
+}

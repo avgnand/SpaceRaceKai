@@ -1,0 +1,28 @@
+﻿@page "/worldevent/{WorldEventId:int}"
+@using SpaceRaceKai.Shared.Models.WorldEvent
+@inject HttpClient http
+
+<h3>Detail</h3>
+
+@if (WorldEvent != null)
+{
+    <div>
+        <WorldEventTable model=@WorldEvent />
+    </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int WorldEventId { get; set; }
+
+    public WorldEventDetail WorldEvent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        WorldEvent = await http.GetFromJsonAsync<WorldEventDetail>($"/api/worldevent/{WorldEventId}");
+    }
+}

@@ -1,0 +1,53 @@
+﻿@page "/worldevent/create"
+@using SpaceRaceKai.Shared.Models.WorldEvent
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+else
+{
+    <div>
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <div>
+                <label>Name</label>
+                <InputText @bind-Value="model.Name" />
+            </div>
+            <div>
+                <label>Description</label>
+                <InputText @bind-Value="model.Description" />
+            </div>
+            <div>
+                <label>Planet Type ID</label>
+                <InputNumber @bind-Value="model.PlanetTypeId" />
+            </div>
+            <div>
+                <label>Event Effect ID</label>
+                <InputNumber @bind-Value="model.EventEffectId" />
+            </div>
+            <button type="submit">Create</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private string? errorMessage;
+    private WorldEventCreate model = new();
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PostAsJsonAsync<WorldEventCreate>("/api/worldevent", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/worldevent");
+        }
+        else
+        {
+            errorMessage = "The world event could not be created right now. Please try again later.";
+        }
+    }
+}
