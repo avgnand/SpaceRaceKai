@@ -40,7 +40,10 @@ namespace SpaceRaceKai.Server.Services.WorldEvent
 
         public async Task<WorldEventDetail?> GetWorldEventByIdAsync(int id)
         {
-            var worldEvent = await _context.WorldEvents.FindAsync(id);
+            var worldEvent = await _context.WorldEvents
+                .Include(we => we.PlanetType)
+                .Include(we => we.EventEffect)
+                .FirstOrDefaultAsync(we => we.Id == id);
             if (worldEvent is null) return null;
             else return new WorldEventDetail
             {

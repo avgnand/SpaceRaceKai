@@ -39,7 +39,10 @@ namespace SpaceRaceKai.Server.Services.DecisionEvent
 
         public async Task<DecisionEventDetail?> GetDecisionEventByIdAsync(int id)
         {
-            var decisionEvent = await _context.DecisionEvents.FindAsync(id);
+            var decisionEvent = await _context.DecisionEvents
+                .Include(de => de.EventEffectA)
+                .Include(de => de.EventEffectB)
+                .FirstOrDefaultAsync(de => de.Id == id);
             if (decisionEvent is null) return null;
             else return new DecisionEventDetail
             {

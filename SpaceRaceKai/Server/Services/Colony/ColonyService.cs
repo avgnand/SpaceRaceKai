@@ -47,7 +47,10 @@ namespace SpaceRaceKai.Server.Services.Colony
 
         public async Task<ColonyDetail?> GetColonyByIdAsync(int id)
         {
-            var colony = await _context.Colonies.FindAsync(id);
+            var colony = await _context.Colonies
+                .Include(c => c.User)
+                .Include(c => c.PlanetType)
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (colony is null) return null;
             else return new ColonyDetail
             {
