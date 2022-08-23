@@ -1,0 +1,69 @@
+﻿@page "/colony/create"
+@using SpaceRaceKai.Shared.Models.Colony
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+else
+{
+    <div>
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <div>
+                <label>Name</label>
+                <InputText @bind-Value="model.Name" />
+            </div>
+            <div>
+                <label>Population</label>
+                <InputNumber @bind-Value="model.Population" />
+            </div>
+            <div>
+                <label>Approval Rating</label>
+                <InputNumber @bind-Value="model.ApprovalRating" />
+            </div>
+            <div>
+                <label>Tech Level</label>
+                <InputNumber @bind-Value="model.TechLevel" />
+            </div>
+            <div>
+                <label>Industry Level</label>
+                <InputNumber @bind-Value="model.IndustryLevel" />
+            </div>
+            <div>
+                <label>Wealth Level</label>
+                <InputNumber @bind-Value="model.WealthLevel" />
+            </div>
+            <div>
+                <label>User ID</label>
+                <InputText @bind-Value="model.UserId" />
+            </div>
+            <div>
+                <label>Planet Type ID</label>
+                <InputNumber @bind-Value="model.PlanetTypeId" />
+            </div>
+            <button type="submit">Create</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private string? errorMessage;
+    private ColonyCreate model = new();
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PostAsJsonAsync<ColonyCreate>("/api/colony", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/colony");
+        }
+        else
+        {
+            errorMessage = "Your colony could not be created right now. Please try again later.";
+        }
+    }
+}

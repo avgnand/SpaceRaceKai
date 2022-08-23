@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Shared\SpaceRaceKai.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Colony\" />
-  </ItemGroup>
-
 </Project>

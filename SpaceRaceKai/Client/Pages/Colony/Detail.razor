@@ -1,0 +1,53 @@
+﻿@page "/colony/{ColonyId:int}"
+@using SpaceRaceKai.Shared.Models.Colony
+@inject HttpClient http
+
+<h3>Detail</h3>
+
+@if (Colony != null)
+{
+    <div>
+        <p>@Colony.Name</p>
+        <p>ID: @Colony.Id</p>
+        <p>User: [ID-@Colony.UserId] @Colony.UserEmail</p>
+        <p>Planet Type: [ID-@Colony.PlanetTypeId] @Colony.PlanetTypeName</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Population</th>
+                    <th>Approval Rating</th>
+                    <th>Tech Level</th>
+                    <th>Industry Level</th>
+                    <th>Wealth Level</th>
+                    <th>Playthroughs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Colony.Population</td>
+                    <td>@Colony.ApprovalRating</td>
+                    <td>@Colony.TechLevel</td>
+                    <td>@Colony.IndustryLevel</td>
+                    <td>@Colony.WealthLevel</td>
+                    <td>@Colony.Playthroughs</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int ColonyId { get; set; }
+
+    public ColonyDetail Colony { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Colony = await http.GetFromJsonAsync<ColonyDetail>($"/api/colony/{ColonyId}");
+    }
+}

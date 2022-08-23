@@ -1,0 +1,49 @@
+﻿@page "/colony"
+@using SpaceRaceKai.Shared.Models.Colony
+@inject HttpClient http
+
+<h3>Index</h3>
+<a href="/colony/create">Create a new colony</a>
+
+@if (colonies is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>User ID</th>
+                <th>Planet Type</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ColonyListItem item in colonies)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.UserId</td>
+                    <td>@item.PlanetTypeName</td>
+                    <td>
+                        <a href=@($"colony/{item.Id}")>Details</a>
+                        <a href=@($"colony/delete/{item.Id}")>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ColonyListItem> colonies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        colonies = await http.GetFromJsonAsync<List<ColonyListItem>>("api/colony");
+    }
+}
