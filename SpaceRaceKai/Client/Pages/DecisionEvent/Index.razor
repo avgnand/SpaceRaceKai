@@ -2,7 +2,8 @@
 @using SpaceRaceKai.Shared.Models.DecisionEvent
 @inject HttpClient http
 
-<h3>Index</h3>
+<h3>Decision Events</h3>
+<a href="/decisionevent/create">Create a new decision event</a>
 
 @if (decisionEvents is null)
 {
@@ -16,6 +17,7 @@ else
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +26,10 @@ else
                     <tr>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
+                        <td>
+                            <a href=@($"/decisionevent/{item.Id}")>Details</a>
+                            <a href=@($"/decisionevent/delete/{item.Id}")>Delete</a>
+                        </td>
                     </tr>
                 }
             </tbody>

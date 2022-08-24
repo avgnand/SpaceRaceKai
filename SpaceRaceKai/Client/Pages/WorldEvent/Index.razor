@@ -2,7 +2,8 @@
 @using SpaceRaceKai.Shared.Models.WorldEvent
 @inject HttpClient http
 
-<h3>Index</h3>
+<h3>World Events</h3>
+<a href="/worldevent/create">Create a new world event</a>
 
 @if (worldEvents is null)
 {
@@ -17,6 +18,7 @@ else
                     <th>ID</th>
                     <th>Name</th>
                     <th>Planet Type</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +28,10 @@ else
                         <td>@item.Id</td>
                         <td>@item.Name</td>
                         <td>@item.PlanetTypeName</td>
+                        <td>
+                            <a href=@($"/worldevent/{item.Id}")>Details</a>
+                            <a href=@($"/worldevent/delete/{item.Id}")>Delete</a>
+                        </td>
                     </tr>
                 }
             </tbody>
