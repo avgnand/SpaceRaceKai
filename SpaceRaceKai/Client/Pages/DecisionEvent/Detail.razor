@@ -1,0 +1,30 @@
+﻿@page "/decisionevent/{DecisionEventId:int}"
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@inject HttpClient http
+
+<h3>Detail</h3>
+
+@if (DecisionEvent != null)
+{
+    <div>
+        <p>@DecisionEvent.Name</p>
+        <p>ID: @DecisionEvent.Id</p>
+        <DecisionEventTable model=DecisionEvent />
+    </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int DecisionEventId { get; set; }
+
+    public DecisionEventDetail DecisionEvent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DecisionEvent = await http.GetFromJsonAsync<DecisionEventDetail>($"/api/decisionevent/{DecisionEventId}");
+    }
+}

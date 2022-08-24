@@ -1,0 +1,53 @@
+﻿@page "/decisionevent/create"
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Create</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+else
+{
+    <div>
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <div>
+                <label>Name</label>
+                <InputText @bind-Value="model.Name" />
+            </div>
+            <div>
+                <label>Description</label>
+                <InputText @bind-Value="model.Description" />
+            </div>
+            <div>
+                <label>Event Effect A ID</label>
+                <InputNumber @bind-Value="model.EventEffectIdA" />
+            </div>
+            <div>
+                <label>Event Effect B ID</label>
+                <InputNumber @bind-Value="model.EventEffectIdB" />
+            </div>
+            <button type="submit">Create</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private string? errorMessage;
+    private DecisionEventCreate model = new();
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PostAsJsonAsync<DecisionEventCreate>("/api/decisionevent", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/decisionevent");
+        }
+        else
+        {
+            errorMessage = "The decision event could not be created right now. Please try again later.";
+        }
+    }
+}

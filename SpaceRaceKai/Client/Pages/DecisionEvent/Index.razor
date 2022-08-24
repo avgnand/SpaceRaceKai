@@ -1,0 +1,41 @@
+﻿@page "/decisionevent"
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@inject HttpClient http
+
+<h3>Index</h3>
+
+@if (decisionEvents is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DecisionEventListItem item in decisionEvents)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<DecisionEventListItem> decisionEvents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        decisionEvents = await http.GetFromJsonAsync<List<DecisionEventListItem>>("api/decisionevent");
+    }
+}

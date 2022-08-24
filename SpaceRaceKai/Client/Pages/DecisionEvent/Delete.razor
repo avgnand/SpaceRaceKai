@@ -1,0 +1,52 @@
+﻿@page "/decisionevent/delete/{DecisionEventId:int}"
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Delete</h3>
+
+@if (Message != null)
+{
+    <h2>@Message</h2>
+}
+@if (model != null)
+{
+    <div>
+        <p><strong>Details</strong></p>
+        <DecisionEventTable model=@model />
+        <div>
+            <a href="/decisionevent">Return to Decision Events</a>
+            <a href="#" @onclick="HandleClick">DELETE</a>
+        </div>
+    </div>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int DecisionEventId { get; set; }
+
+    public DecisionEventDetail model = new();
+    public string? Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<DecisionEventDetail>($"/api/decisionevent/{DecisionEventId}");
+    }
+
+    private async void HandleClick()
+    {
+        var response = await http.DeleteAsync($"/api/decisionevent/{DecisionEventId}");
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/decisionevent");
+        }
+        else
+        {
+            Message = $"Decision Event '{model.Name}' (ID: {model.Id}) could not be deleted.";
+        }
+    }
+}

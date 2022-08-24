@@ -1,0 +1,58 @@
+﻿@page "/decisionevent/edit/{DecisionEventId:int}"
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Edit</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+<div>
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div>
+            <label>Name</label>
+            <InputText @bind-Value="model.Name" />
+        </div>
+        <div>
+            <label>Description</label>
+            <InputText @bind-Value="model.Description" />
+        </div>
+        <div>
+            <label>Event Effect A ID</label>
+            <InputNumber @bind-Value="model.EventEffectIdA" />
+        </div>
+        <div>
+            <label>Event Effect B ID</label>
+            <InputNumber @bind-Value="model.EventEffectIdB" />
+        </div>
+        <button type="submit">Confirm</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int DecisionEventId { get; set; }
+
+    private DecisionEventEdit model = new();
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<DecisionEventEdit>($"/api/decisionevent/{DecisionEventId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PutAsJsonAsync<DecisionEventEdit>($"/api/decisionevent/edit/{DecisionEventId}", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/decisionevent/{DecisionEventId}");
+        }
+        else
+        {
+            errorMessage = $"Changes to Decision Event '{model.Name}' (ID: {model.Id}) could not be saved.";
+        }
+    }
+}
