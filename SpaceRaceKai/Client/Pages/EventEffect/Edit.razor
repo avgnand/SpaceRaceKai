@@ -1,0 +1,59 @@
+﻿@page "/eventeffect/edit/{EventEffectId:int}"
+@using SpaceRaceKai.Shared.Models.EventEffect
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Edit</h3>
+
+@if (errorMessage != null)
+{
+    <h5>@errorMessage</h5>
+}
+<div>
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <div>
+            <label>Population Change</label>
+            <InputNumber @bind-Value="model.PopulationChange" />
+        </div>
+        <div>
+            <label>Approval Change</label>
+            <InputNumber @bind-Value="model.ApprovalChange" />
+        </div><div>
+            <label>Tech Change</label>
+            <InputNumber @bind-Value="model.TechChange" />
+        </div><div>
+            <label>Industry Change</label>
+            <InputNumber @bind-Value="model.IndustryChange" />
+        </div><div>
+            <label>Wealth Change</label>
+            <InputNumber @bind-Value="model.WealthChange" />
+        </div>
+        <button type="submit">Submit</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int EventEffectId { get; set; }
+
+    private EventEffectEdit model = new();
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<EventEffectEdit>($"/api/eventeffect/{EventEffectId}");
+    }
+
+    private async void HandleSubmit()
+    {
+        var response = await http.PutAsJsonAsync<EventEffectEdit>($"/api/eventeffect/edit/{EventEffectId}", model);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/eventeffect/{EventEffectId}");
+        }
+        else
+        {
+            errorMessage = $"Changes to Event Effect (ID: {model.Id}) could not be saved";
+        }
+    }
+}
