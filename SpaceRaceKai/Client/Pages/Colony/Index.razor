@@ -31,6 +31,7 @@ else
                     <td>@item.PlanetTypeName</td>
                     <td>
                         <a href=@($"colony/{item.Id}")>Details</a>
+                        <a href=@($"colony/edit/{item.Id}")>Edit</a>
                         <a href=@($"colony/delete/{item.Id}")>Delete</a>
                     </td>
                 </tr>

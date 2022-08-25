@@ -30,6 +30,7 @@ else
                         <td>@item.PlanetTypeName</td>
                         <td>
                             <a href=@($"/worldevent/{item.Id}")>Details</a>
+                            <a href=@($"worldevent/edit/{item.Id}")>Edit</a>
                             <a href=@($"/worldevent/delete/{item.Id}")>Delete</a>
                         </td>
                     </tr>
