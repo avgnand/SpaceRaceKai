@@ -1,0 +1,60 @@
+﻿@page "/game/{ColonyId:int}"
+@using SpaceRaceKai.Shared.Models.Colony
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@using SpaceRaceKai.Shared.Models.WorldEvent
+@inject HttpClient http
+
+<h3>Start</h3>
+
+@code {
+    [Parameter]
+    public int ColonyId { get; set; }
+
+    private ColonyDetail userColony { get; set; } = new();
+    private List<WorldEventListItem> worldEvents;
+    private List<DecisionEventListItem> decisionEvents;
+
+    private List<WorldEventListItem> gameWorldEvents;
+    private List<DecisionEventListItem> gameDecisionEvents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userColony = await http.GetFromJsonAsync<ColonyDetail>($"/api/colony/{ColonyId}");
+        worldEvents = await http.GetFromJsonAsync<List<WorldEventListItem>>("/api/worldevent");
+        decisionEvents = await http.GetFromJsonAsync<List<DecisionEventListItem>>("/api/decisionevent");
+        
+        gameWorldEvents = ChooseEvents<WorldEventListItem>(5, worldEvents);
+        gameDecisionEvents = ChooseEvents<DecisionEventListItem>(5, decisionEvents);
+    }
+
+    /// <summary>
+    /// Choose a certain number of unique, random members from a List of type T.
+    /// </summary>
+    private List<T> ChooseEvents<T>(int amount, List<T> values)
+    {
+        // Bounds-checking 'amount' argument
+        if (amount > values.Count) amount = values.Count;
+        if (amount <= 0) return new List<T>();
+
+        // Get unique, random indices within 'values'
+        List<int> indices = new();
+        var RNG = new Random();
+        for (int i = 0; i < amount; i++)
+        {
+            int index = RNG.Next(values.Count);
+            while (indices.Contains(index))
+            {
+                index = RNG.Next(values.Count);
+            }
+            indices.Add(index);
+        }
+
+        // Add each random value to result
+        List<T> result = new();
+        foreach (var i in indices)
+        {
+            result.Add(values[i]);
+        }
+        return result;
+    }
+}
