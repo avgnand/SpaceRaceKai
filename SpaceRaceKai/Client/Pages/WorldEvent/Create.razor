@@ -1,4 +1,6 @@
 ﻿@page "/worldevent/create"
+@using SpaceRaceKai.Shared.Models.EventEffect
+@using SpaceRaceKai.Shared.Models.PlanetType
 @using SpaceRaceKai.Shared.Models.WorldEvent
 @inject HttpClient http
 @inject NavigationManager navigation
@@ -23,11 +25,24 @@ else
             </div>
             <div>
                 <label>Planet Type ID</label>
-                <InputNumber @bind-Value="model.PlanetTypeId" />
+                <InputSelect @bind-Value="model.PlanetTypeId">
+                    @foreach (var item in planetTypes)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </InputSelect>
             </div>
             <div>
                 <label>Event Effect ID</label>
-                <InputNumber @bind-Value="model.EventEffectId" />
+                <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
+                <InputSelect @bind-Value="model.EventEffectId">
+                    @foreach (var item in eventEffects)
+                    {
+                        <option value="@item.Id">
+                            @item.PopulationChange/@item.ApprovalChange/@item.WealthChange/@item.TechChange/@item.IndustryChange
+                        </option>
+                    }
+                </InputSelect>
             </div>
             <button type="submit">Create</button>
         </EditForm>
@@ -37,6 +52,15 @@ else
 @code {
     private string? errorMessage;
     private WorldEventCreate model = new();
+
+    private List<PlanetTypeListItem> planetTypes;
+    private List<EventEffectListItem> eventEffects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        planetTypes = await http.GetFromJsonAsync<List<PlanetTypeListItem>>("/api/planettype");
+        eventEffects = await http.GetFromJsonAsync<List<EventEffectListItem>>("/api/eventeffect");
+    }
 
     private async void HandleSubmit()
     {

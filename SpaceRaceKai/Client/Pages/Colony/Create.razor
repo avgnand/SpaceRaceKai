@@ -1,5 +1,6 @@
 ﻿@page "/colony/create"
 @using SpaceRaceKai.Shared.Models.Colony
+@using SpaceRaceKai.Shared.Models.PlanetType
 @inject HttpClient http
 @inject NavigationManager navigation
 
@@ -43,7 +44,12 @@ else
             </div>
             <div>
                 <label>Planet Type ID</label>
-                <InputNumber @bind-Value="model.PlanetTypeId" />
+                <InputSelect @bind-Value="model.PlanetTypeId">
+                    @foreach (var item in planetTypes)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </InputSelect>
             </div>
             <button type="submit">Create</button>
         </EditForm>
@@ -53,6 +59,13 @@ else
 @code {
     private string? errorMessage;
     private ColonyCreate model = new();
+
+    private List<PlanetTypeListItem> planetTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        planetTypes = await http.GetFromJsonAsync<List<PlanetTypeListItem>>("/api/planettype");
+    }
 
     private async void HandleSubmit()
     {

@@ -1,5 +1,6 @@
 ﻿@page "/decisionevent/create"
 @using SpaceRaceKai.Shared.Models.DecisionEvent
+@using SpaceRaceKai.Shared.Models.EventEffect
 @inject HttpClient http
 @inject NavigationManager navigation
 
@@ -23,11 +24,27 @@ else
             </div>
             <div>
                 <label>Event Effect A ID</label>
-                <InputNumber @bind-Value="model.EventEffectIdA" />
+                <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
+                <InputSelect @bind-Value="model.EventEffectIdA">
+                    @foreach (var item in eventEffects)
+                    {
+                        <option value="@item.Id">
+                            @item.PopulationChange/@item.ApprovalChange/@item.WealthChange/@item.TechChange/@item.IndustryChange
+                        </option>
+                    }
+                </InputSelect>
             </div>
             <div>
                 <label>Event Effect B ID</label>
-                <InputNumber @bind-Value="model.EventEffectIdB" />
+                <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
+                <InputSelect @bind-Value="model.EventEffectIdB">
+                    @foreach (var item in eventEffects)
+                    {
+                        <option value="@item.Id">
+                            @item.PopulationChange/@item.ApprovalChange/@item.WealthChange/@item.TechChange/@item.IndustryChange
+                        </option>
+                    }
+                </InputSelect>
             </div>
             <button type="submit">Create</button>
         </EditForm>
@@ -37,6 +54,13 @@ else
 @code {
     private string? errorMessage;
     private DecisionEventCreate model = new();
+
+    private List<EventEffectListItem> eventEffects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        eventEffects = await http.GetFromJsonAsync<List<EventEffectListItem>>("/api/eventeffect");
+    }
 
     private async void HandleSubmit()
     {
