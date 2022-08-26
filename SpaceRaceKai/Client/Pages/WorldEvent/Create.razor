@@ -53,8 +53,8 @@ else
     private string? errorMessage;
     private WorldEventCreate model = new();
 
-    private List<PlanetTypeListItem> planetTypes;
-    private List<EventEffectListItem> eventEffects;
+    private List<PlanetTypeListItem> planetTypes = new();
+    private List<EventEffectListItem> eventEffects = new();
 
     protected override async Task OnInitializedAsync()
     {

@@ -55,7 +55,7 @@ else
     private string? errorMessage;
     private DecisionEventCreate model = new();
 
-    private List<EventEffectListItem> eventEffects;
+    private List<EventEffectListItem> eventEffects = new();
 
     protected override async Task OnInitializedAsync()
     {
