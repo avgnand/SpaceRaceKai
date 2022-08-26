@@ -3,7 +3,7 @@
     <h4>@Model.Name</h4>
     <p>@Model.Description</p>
     <h6>Choose:</h6>
-    <div @onclick="MakeDecision">
+    <div>
         <ul>
             <li>Population: @ShowSignedNumber(Model.PopulationChangeA)@Model.PopulationChangeA</li>
             <li>Approval: @ShowSignedNumber(Model.ApprovalChangeA)@Model.ApprovalChangeA</li>
@@ -12,7 +12,7 @@
             <li>Industry: @ShowSignedNumber(Model.IndustryChangeA)@Model.IndustryChangeA</li>
         </ul>
     </div>
-    <div @onclick="MakeDecision">
+    <div>
         <ul>
             <li>Population: @ShowSignedNumber(Model.PopulationChangeB)@Model.PopulationChangeB</li>
             <li>Approval: @ShowSignedNumber(Model.ApprovalChangeB)@Model.ApprovalChangeB</li>
@@ -25,11 +25,6 @@
 @code {
     [Parameter]
     public DecisionEventDetail Model { get; set; }
-
-    private void MakeDecision()
-    {
-        // flag this event effect for final game tally
-    }
 
     private char ShowSignedNumber(int number)
     {
