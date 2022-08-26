@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Game\WorldEventPanel.razor" />
+    <None Include="Pages\Panels\WorldEventPanel.razor" />
   </ItemGroup>
 
 </Project>
