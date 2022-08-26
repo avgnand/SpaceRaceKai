@@ -1,0 +1,218 @@
+﻿@page "/game/{ColonyId:int}"
+@using SpaceRaceKai.Client.Pages.Panels
+@using SpaceRaceKai.Shared.Models.Colony
+@using SpaceRaceKai.Shared.Models.DecisionEvent
+@using SpaceRaceKai.Shared.Models.EventEffect
+@using SpaceRaceKai.Shared.Models.WorldEvent
+@inject HttpClient http
+@inject NavigationManager navigation
+
+@if (errorMessage != null)
+{
+    <h3>@errorMessage</h3>
+}
+
+<div>
+    @if (EventsPassed < EventTotal/2)
+    {
+        <WorldEventPanel Model=@(CurrentWorldEvent) />
+    }
+    else if (EventsPassed > EventTotal/2 && EventsPassed < EventTotal)
+    {
+        <DecisionEventPanel Model=@(CurrentDecisionEvent) />
+        <div>
+            <button @onclick="ChooseOptionA">Option A</button>
+            <button @onclick="ChooseOptionB">Option B</button>
+        </div>
+    }
+    @if (EventsPassed < EventTotal)
+    {
+        <button @onclick="CycleNextEvent">Next</button>
+    }
+    else
+    {
+        <button @onclick="FinishGame">Finish</button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int ColonyId { get; set; }
+
+    private ColonyDetail userColony { get; set; } = new();
+    private ColonyEdit postGameColony { get; set; } = new();
+
+    // all world events are shown first, then decision events
+    private List<WorldEventDetail> gameWorldEvents = new();
+    private List<DecisionEventDetail> gameDecisionEvents = new();
+
+    // list of effects of events chosen by player
+    private List<EventEffectDetail> gameDecisionEffects { get; set; } = new();
+
+    private int EventsPassed { get; set; } = 0;
+    private int EventTotal => gameWorldEvents.Count + gameDecisionEvents.Count;
+
+    private WorldEventDetail CurrentWorldEvent => gameWorldEvents[EventsPassed];
+    private DecisionEventDetail CurrentDecisionEvent => gameDecisionEvents[EventsPassed % (EventTotal / 2)];
+
+    private string? errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        userColony = await http.GetFromJsonAsync<ColonyDetail>($"/api/colony/{ColonyId}");
+        var worldEvents = await http.GetFromJsonAsync<List<WorldEventListItem>>("/api/worldevent");
+        var decisionEvents = await http.GetFromJsonAsync<List<DecisionEventListItem>>("/api/decisionevent");
+
+        List<WorldEventDetail> worldEventDetails = new();
+        foreach (var we in worldEvents)
+        {
+            worldEventDetails.Add(await http.GetFromJsonAsync<WorldEventDetail>($"/api/worldevent/{we.Id}"));
+        }
+
+        List<DecisionEventDetail> decisionEventDetails = new();
+        foreach (var de in decisionEvents)
+        {
+            decisionEventDetails.Add(await http.GetFromJsonAsync<DecisionEventDetail>($"/api/decisionevent/{de.Id}"));
+        }
+
+        gameWorldEvents = ChooseEvents<WorldEventDetail>(5, worldEventDetails);
+        gameDecisionEvents = ChooseEvents<DecisionEventDetail>(5, decisionEventDetails);
+    }
+
+    private void CycleNextEvent()
+    {
+        // moves on to next game event
+        EventsPassed += 1;
+    }
+
+    private async void FinishGame()
+    {
+        // give values to ColonyEdit model before sending request
+        postGameColony.Id = userColony.Id;
+        postGameColony.Name = userColony.Name;
+        postGameColony.PlanetTypeId = userColony.PlanetTypeId;
+
+        // TODO: increment colony playthroughs by one
+
+        TallyWorldEventChanges();
+        TallyDecisionEventChanges();
+
+        // sends put request (edits colony with stat changes)
+        var response = await http.PutAsJsonAsync<ColonyEdit>($"/api/colony/edit/{ColonyId}", postGameColony);
+        if (response.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/colony/{ColonyId}");
+        }
+        else
+        {
+            errorMessage = "There was a problem saving changes.";
+        }
+    }
+
+    /// <summary>
+    /// Choose a certain number of unique, random members from a List of type T.
+    /// </summary>
+    private List<T> ChooseEvents<T>(int amount, List<T> values)
+    {
+        // Bounds-checking 'amount' argument
+        if (amount > values.Count) amount = values.Count;
+        if (amount <= 0) return new List<T>();
+
+        // Get unique, random indices within 'values' and add them to a List<int>
+        List<int> indices = new();
+        var RNG = new Random();
+        for (int i = 0; i < amount; i++)
+        {
+            int index = RNG.Next(values.Count);
+            while (indices.Contains(index))
+            {
+                index = RNG.Next(values.Count);
+            }
+            indices.Add(index);
+        }
+
+        // Add random values (found at each random index) to result
+        List<T> result = new();
+        foreach (var i in indices)
+        {
+            result.Add(values[i]);
+        }
+        return result;
+    }
+
+    private void TallyWorldEventChanges()
+    {
+        // sum all WE changes
+        int totalPopulationChange = 0;
+        int totalApprovalChange = 0;
+        int totalWealthChange = 0;
+        int totalTechChange = 0;
+        int totalIndustryChange = 0;
+        foreach (var we in gameWorldEvents)
+        {
+            totalPopulationChange += we.PopulationChange;
+            totalApprovalChange += we.ApprovalChange;
+            totalWealthChange += we.WealthChange;
+            totalTechChange += we.TechChange;
+            totalIndustryChange += we.IndustryChange;
+        }
+        postGameColony.Population += totalPopulationChange;
+        postGameColony.ApprovalRating += totalApprovalChange;
+        postGameColony.WealthLevel += totalWealthChange;
+        postGameColony.TechLevel += totalTechChange;
+        postGameColony.IndustryLevel += totalIndustryChange;
+    }
+
+    private void TallyDecisionEventChanges()
+    {
+        // sum all DE changes
+        int totalPopulationChange = 0;
+        int totalApprovalChange = 0;
+        int totalWealthChange = 0;
+        int totalTechChange = 0;
+        int totalIndustryChange = 0;
+        foreach (var eed in gameDecisionEffects)
+        {
+            totalPopulationChange += eed.PopulationChange;
+            totalApprovalChange += eed.ApprovalChange;
+            totalWealthChange += eed.WealthChange;
+            totalTechChange += eed.TechChange;
+            totalIndustryChange += eed.IndustryChange;
+        }
+        postGameColony.Population += totalPopulationChange;
+        postGameColony.ApprovalRating += totalApprovalChange;
+        postGameColony.WealthLevel += totalWealthChange;
+        postGameColony.TechLevel += totalTechChange;
+        postGameColony.IndustryLevel += totalIndustryChange;
+    }
+
+    private void ChooseOptionA()
+    {
+        gameDecisionEffects.Add
+        (
+            new EventEffectDetail
+            {
+                PopulationChange = CurrentDecisionEvent.PopulationChangeA,
+                ApprovalChange = CurrentDecisionEvent.ApprovalChangeA,
+                WealthChange = CurrentDecisionEvent.WealthChangeA,
+                TechChange = CurrentDecisionEvent.TechChangeA,
+                IndustryChange = CurrentDecisionEvent.IndustryChangeA
+            }
+        );
+    }
+
+    private void ChooseOptionB()
+    {
+        gameDecisionEffects.Add
+        (
+            new EventEffectDetail
+                {
+                    PopulationChange = CurrentDecisionEvent.PopulationChangeB,
+                    ApprovalChange = CurrentDecisionEvent.ApprovalChangeB,
+                    WealthChange = CurrentDecisionEvent.WealthChangeB,
+                    TechChange = CurrentDecisionEvent.TechChangeB,
+                    IndustryChange = CurrentDecisionEvent.IndustryChangeB
+                }
+        );
+    }
+}
