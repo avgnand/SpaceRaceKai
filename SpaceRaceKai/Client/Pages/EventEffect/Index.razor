@@ -4,33 +4,33 @@
 
 <h3>Event Effects</h3>
 <a href="/eventeffect/create">Create a new Event Effect</a>
-
+<p>This table shows the changes to all colony stats that each event effect will cause.</p>
 @if (eventEffects is null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table>
-        <thead>
+    <table class="table table-sm table-bordered table-hover">
+        <thead class="table-light">
             <tr>
-                <th>Population Change</th>
-                <th>Approval Change</th>
-                <th>Tech Change</th>
-                <th>Industry Change</th>
-                <th>Wealth Change</th>
-                <th>Options</th>
+                <th class="text-center">Population</th>
+                <th class="text-center">Approval</th>
+                <th class="text-center">Tech</th>
+                <th class="text-center">Industry</th>
+                <th class="text-center">Wealth</th>
+                <th class="text-center">Options</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             @foreach (EventEffectListItem item in eventEffects)
             {
                 <tr>
-                    <td>@item.PopulationChange</td>
-                    <td>@item.ApprovalChange</td>
-                    <td>@item.TechChange</td>
-                    <td>@item.IndustryChange</td>
-                    <td>@item.WealthChange</td>
+                    <td class="text-center" width="8%">@item.PopulationChange</td>
+                    <td class="text-center" width="8%">@item.ApprovalChange</td>
+                    <td class="text-center" width="8%">@item.TechChange</td>
+                    <td class="text-center" width="8%">@item.IndustryChange</td>
+                    <td class="text-center" width="8%">@item.WealthChange</td>
                     <td>
                         <a href=@($"eventeffect/{item.Id}")>Details</a>
                         <a href=@($"eventeffect/edit/{item.Id}")>Edit</a>
