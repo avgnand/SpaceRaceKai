@@ -15,7 +15,6 @@ else
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Options</th>
                 </tr>
@@ -24,7 +23,6 @@ else
                 @foreach (DecisionEventListItem item in decisionEvents)
                 {
                     <tr>
-                        <td>@item.Id</td>
                         <td>@item.Name</td>
                         <td>
                             <a href=@($"/decisionevent/{item.Id}")>Details</a>

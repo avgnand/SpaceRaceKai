@@ -14,7 +14,6 @@ else
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Options</th>
             </tr>
@@ -23,7 +22,6 @@ else
             @foreach (PlanetTypeListItem item in planettypes)
             {
                 <tr>
-                    <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>
                         <a href=@($"planettype/{item.Id}")>Details</a>
