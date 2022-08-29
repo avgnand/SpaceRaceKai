@@ -2,36 +2,50 @@
 @using SpaceRaceKai.Shared.Models.Colony
 @inject HttpClient http
 
-<h3>Detail</h3>
-
 @if (Colony != null)
 {
-    <div>
-        <p>@Colony.Name</p>
-        <p>User: [ID-@Colony.UserId] @Colony.UserEmail</p>
-        <p>Planet Type: @Colony.PlanetTypeName</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Population</th>
-                    <th>Approval Rating</th>
-                    <th>Tech Level</th>
-                    <th>Industry Level</th>
-                    <th>Wealth Level</th>
-                    <th>Playthroughs</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Colony.Population</td>
-                    <td>@Colony.ApprovalRating</td>
-                    <td>@Colony.TechLevel</td>
-                    <td>@Colony.IndustryLevel</td>
-                    <td>@Colony.WealthLevel</td>
-                    <td>@Colony.Playthroughs</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">@Colony.Name</h3>
+            <p>User: @Colony.UserEmail [ID: @Colony.UserId]</p>
+            <p>Planet Type: @Colony.PlanetTypeName</p>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm" style="width:fit-content">
+                <thead>
+                    <tr>
+                        <th>Stats</th>
+                        <th>Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Population</td>
+                        <td>@Colony.Population</td>
+                    </tr>
+                    <tr>
+                        <td>Approval</td>
+                        <td>@Colony.ApprovalRating</td>
+                    </tr>
+                    <tr>
+                        <td>Wealth</td>
+                        <td>@Colony.WealthLevel</td>
+                    </tr>
+                    <tr>
+                        <td>Tech</td>
+                        <td>@Colony.TechLevel</td>
+                    </tr>
+                    <tr>
+                        <td>Industry</td>
+                        <td>@Colony.IndustryLevel</td>
+                    </tr>
+                    <tr>
+                        <td>Playthroughs</td>
+                        <td>@Colony.Playthroughs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 }
 else

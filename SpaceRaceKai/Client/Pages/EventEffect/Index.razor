@@ -26,11 +26,11 @@ else
             @foreach (EventEffectListItem item in eventEffects)
             {
                 <tr>
-                    <td class="text-center" width="8%">@item.PopulationChange</td>
-                    <td class="text-center" width="8%">@item.ApprovalChange</td>
-                    <td class="text-center" width="8%">@item.TechChange</td>
-                    <td class="text-center" width="8%">@item.IndustryChange</td>
-                    <td class="text-center" width="8%">@item.WealthChange</td>
+                    <td class="text-center" width="12%">@item.PopulationChange</td>
+                    <td class="text-center" width="12%">@item.ApprovalChange</td>
+                    <td class="text-center" width="12%">@item.TechChange</td>
+                    <td class="text-center" width="12%">@item.IndustryChange</td>
+                    <td class="text-center" width="12%">@item.WealthChange</td>
                     <td>
                         <a href=@($"eventeffect/{item.Id}")>Details</a>
                         <a href=@($"eventeffect/edit/{item.Id}")>Edit</a>

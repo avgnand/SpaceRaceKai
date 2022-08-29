@@ -11,12 +11,12 @@
 }
 else
 {
-    <table>
-        <thead>
+    <table class="table table-sm table-bordered">
+        <thead class="table-light">
             <tr>
                 <th>Name</th>
-                <th>User ID</th>
                 <th>Planet Type</th>
+                <th>User ID</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -25,8 +25,8 @@ else
             {
                 <tr>
                     <td>@item.Name</td>
-                    <td>@item.UserId</td>
                     <td>@item.PlanetTypeName</td>
+                    <td>@item.UserId</td>
                     <td>
                         <a href=@($"colony/{item.Id}")>Details</a>
                         <a href=@($"colony/edit/{item.Id}")>Edit</a>

@@ -12,8 +12,8 @@
 else
 {
     <div>
-        <table>
-            <thead>
+        <table class="table table-sm table-bordered" style="width: fit-content">
+            <thead class="table-light">
                 <tr>
                     <th>Name</th>
                     <th>Planet Type</th>
@@ -25,7 +25,7 @@ else
                 {
                     <tr>
                         <td>@item.Name</td>
-                        <td>@item.PlanetTypeName</td>
+                        <td class="text-center">@item.PlanetTypeName</td>
                         <td>
                             <a href=@($"/worldevent/{item.Id}")>Details</a>
                             <a href=@($"worldevent/edit/{item.Id}")>Edit</a>
