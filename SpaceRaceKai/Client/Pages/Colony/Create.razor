@@ -45,6 +45,7 @@ else
             <div>
                 <label>Planet Type ID</label>
                 <InputSelect @bind-Value="model.PlanetTypeId">
+                    <option value="-1">Select a Planet Type</option>
                     @foreach (var item in planetTypes)
                     {
                         <option value="@item.Id">@item.Name</option>

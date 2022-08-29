@@ -26,6 +26,7 @@ else
             <div>
                 <label>Planet Type ID</label>
                 <InputSelect @bind-Value="model.PlanetTypeId">
+                    <option value="-1">Select a Planet Type</option>
                     @foreach (var item in planetTypes)
                     {
                         <option value="@item.Id">@item.Name</option>
@@ -36,6 +37,7 @@ else
                 <label>Event Effect ID</label>
                 <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
                 <InputSelect @bind-Value="model.EventEffectId">
+                    <option value="-1">Select an Effect</option>
                     @foreach (var item in eventEffects)
                     {
                         <option value="@item.Id">

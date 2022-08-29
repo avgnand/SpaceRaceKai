@@ -26,6 +26,7 @@ else
                 <label>Event Effect A ID</label>
                 <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
                 <InputSelect @bind-Value="model.EventEffectIdA">
+                    <option value="-1">Select an Effect</option>
                     @foreach (var item in eventEffects)
                     {
                         <option value="@item.Id">
@@ -38,6 +39,7 @@ else
                 <label>Event Effect B ID</label>
                 <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
                 <InputSelect @bind-Value="model.EventEffectIdB">
+                    <option value="-1">Select an Effect</option>
                     @foreach (var item in eventEffects)
                     {
                         <option value="@item.Id">
