@@ -28,5 +28,6 @@ namespace SpaceRaceKai.Shared.Models.Colony
         [Required]
         public int PlanetTypeId { get; set; }
 
+        public bool CompletedPlaythrough { get; set; } = false;
     }
 }

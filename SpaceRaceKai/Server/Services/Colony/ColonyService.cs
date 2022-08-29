@@ -81,6 +81,7 @@ namespace SpaceRaceKai.Server.Services.Colony
             entity.IndustryLevel = model.IndustryLevel;
             entity.WealthLevel = model.WealthLevel;
             entity.PlanetTypeId = model.PlanetTypeId;
+            if (model.CompletedPlaythrough) entity.Playthroughs += 1;
             return await _context.SaveChangesAsync() == 1;
         }
 
