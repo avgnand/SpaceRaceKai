@@ -1,48 +1,60 @@
 ﻿@using SpaceRaceKai.Shared.Models.DecisionEvent
-<div>
-    <table>
-        <thead>
+<div style="display: flex">
+    <table class="table table-sm table-bordered table-hover" style="width: fit-content">
+        <thead class="table-light">
             <tr>
-                <th>Event Effect A</th>
-            </tr>
-            <tr>
-                <th>Population Change</th>
-                <th>Approval Change</th>
-                <th>Tech Change</th>
-                <th>Industry Change</th>
-                <th>Wealth Change</th>
+                <th colspan="2">Event Effect A</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>@model.PopulationChangeA</td>
-                <td>@model.ApprovalChangeA</td>
-                <td>@model.TechChangeA</td>
-                <td>@model.IndustryChangeA</td>
-                <td>@model.WealthChangeA</td>
+                <td>Population</td>
+                <td>@Model.PopulationChangeA</td>
+            </tr>
+            <tr>
+                <td>Approval</td>
+                <td>@Model.ApprovalChangeA</td>
+            </tr>
+            <tr>
+                <td>Wealth</td>
+                <td>@Model.WealthChangeA</td>
+            </tr>
+            <tr>
+                <td>Tech</td>
+                <td>@Model.TechChangeA</td>
+            </tr>
+            <tr>
+                <td>Industry</td>
+                <td>@Model.IndustryChangeA</td>
             </tr>
         </tbody>
     </table>
-    <table>
-        <thead>
+    <table class="table table-sm table-bordered table-hover" style="width: fit-content">
+        <thead class="table-light">
             <tr>
-                <th>Event Effect B</th>
-            </tr>
-            <tr>
-                <th>Population Change</th>
-                <th>Approval Change</th>
-                <th>Tech Change</th>
-                <th>Industry Change</th>
-                <th>Wealth Change</th>
+                <th colspan="2">Event Effect B</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>@model.PopulationChangeB</td>
-                <td>@model.ApprovalChangeB</td>
-                <td>@model.TechChangeB</td>
-                <td>@model.IndustryChangeB</td>
-                <td>@model.WealthChangeB</td>
+                <td>Population</td>
+                <td>@Model.PopulationChangeB</td>
+            </tr>
+            <tr>
+                <td>Approval</td>
+                <td>@Model.ApprovalChangeB</td>
+            </tr>
+            <tr>
+                <td>Wealth</td>
+                <td>@Model.WealthChangeB</td>
+            </tr>
+            <tr>
+                <td>Tech</td>
+                <td>@Model.TechChangeB</td>
+            </tr>
+            <tr>
+                <td>Industry</td>
+                <td>@Model.IndustryChangeB</td>
             </tr>
         </tbody>
     </table>
@@ -50,5 +62,5 @@
 
 @code {
     [Parameter]
-    public DecisionEventDetail model { get; set; }
+    public DecisionEventDetail Model { get; set; }
 }

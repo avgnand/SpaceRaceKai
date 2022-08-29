@@ -2,13 +2,9 @@
 @using SpaceRaceKai.Shared.Models.WorldEvent
 @inject HttpClient http
 
-<h3>Detail</h3>
-
 @if (WorldEvent != null)
 {
-    <div>
-        <WorldEventTable model=@WorldEvent />
-    </div>
+    <WorldEventTable Model=@WorldEvent />
 }
 else
 {
