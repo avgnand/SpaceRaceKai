@@ -1,5 +1,6 @@
 ﻿@page "/colony/edit/{ColonyId:int}"
 @using SpaceRaceKai.Shared.Models.Colony
+@using SpaceRaceKai.Shared.Models.PlanetType
 @inject HttpClient http
 @inject NavigationManager navigation
 
@@ -36,8 +37,14 @@
             <InputNumber @bind-Value="model.WealthLevel" />
         </div>
         <div>
-            <label>Planet Type ID</label>
-            <InputNumber @bind-Value="model.PlanetTypeId" />
+            <label>Planet Type</label>
+            <InputSelect @bind-Value="model.PlanetTypeId">
+                <option value="-1">Select a Planet Type</option>
+                @foreach (var item in planetTypes)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </InputSelect>
         </div>
         <button type="submit">Confirm</button>
     </EditForm>
@@ -50,9 +57,12 @@
     private ColonyEdit model = new();
     private string? errorMessage;
 
+    private List<PlanetTypeListItem> planetTypes = new();
+
     protected override async Task OnInitializedAsync()
     {
         model = await http.GetFromJsonAsync<ColonyEdit>($"/api/colony/{ColonyId}");
+        planetTypes = await http.GetFromJsonAsync<List<PlanetTypeListItem>>("/api/planettype");
     }
 
     private async void HandleSubmit()

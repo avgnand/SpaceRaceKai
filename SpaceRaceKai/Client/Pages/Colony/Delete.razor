@@ -13,11 +13,11 @@
 {
     <div>
         <p><strong>Details</strong></p>
-        <p>User: [ID: @Model.UserId] @Model.UserEmail</p>
-        <p>Planet Type: [ID: @Model.PlanetTypeId] @Model.PlanetTypeName</p>
+        <p>User: @Model.UserEmail [ID: @Model.UserId]</p>
+        <p>Planet Type: @Model.PlanetTypeName</p>
         <p>Playthroughs: @Model.Playthroughs</p>
-        <table>
-            <thead>
+        <table class="table table-sm table-bordered">
+            <thead class="table-light">
                 <tr>
                     <th>Population</th>
                     <th>Approval Rating</th>

@@ -1,5 +1,6 @@
 ﻿@page "/decisionevent/edit/{DecisionEventId:int}"
 @using SpaceRaceKai.Shared.Models.DecisionEvent
+@using SpaceRaceKai.Shared.Models.EventEffect
 @inject HttpClient http
 @inject NavigationManager navigation
 
@@ -20,12 +21,28 @@
             <InputText @bind-Value="model.Description" />
         </div>
         <div>
-            <label>Event Effect A ID</label>
-            <InputNumber @bind-Value="model.EventEffectIdA" />
+            <label>Event Effect A</label>
+            <InputSelect @bind-Value="model.EventEffectIdA">
+                <option value="-1">Select an Event Effect</option>
+                @foreach (var item in eventEffects)
+                {
+                    <option value="@item.Id">
+                        @item.PopulationChange/@item.ApprovalChange/@item.WealthChange/@item.TechChange/@item.IndustryChange
+                    </option>
+                }
+            </InputSelect>
         </div>
         <div>
-            <label>Event Effect B ID</label>
-            <InputNumber @bind-Value="model.EventEffectIdB" />
+            <label>Event Effect B</label>
+            <InputSelect @bind-Value="model.EventEffectIdB">
+                <option value="-1">Select an Event Effect</option>
+                @foreach (var item in eventEffects)
+                {
+                    <option value="@item.Id">
+                        @item.PopulationChange/@item.ApprovalChange/@item.WealthChange/@item.TechChange/@item.IndustryChange
+                    </option>
+                }
+            </InputSelect>
         </div>
         <button type="submit">Confirm</button>
     </EditForm>
@@ -37,6 +54,8 @@
 
     private DecisionEventEdit model = new();
     private string? errorMessage;
+
+    private List<EventEffectListItem> eventEffects = new();
 
     protected override async Task OnInitializedAsync()
     {
