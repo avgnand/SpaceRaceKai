@@ -2,12 +2,10 @@
 @using SpaceRaceKai.Shared.Models.DecisionEvent
 @inject HttpClient http
 
-<h3>Detail</h3>
-
 @if (DecisionEvent != null)
 {
     <div>
-        <p>@DecisionEvent.Name</p>
+        <h3>@DecisionEvent.Name</h3>
         <p>Description: @DecisionEvent.Description</p>
         <DecisionEventTable Model=@DecisionEvent />
     </div>
