@@ -40,6 +40,7 @@
     }
 </div>
 
+
 @code {
     [Parameter]
     public int ColonyId { get; set; }
@@ -55,7 +56,7 @@
     private List<EventEffectDetail> gameDecisionEffects { get; set; } = new();
 
     private int EventTotal => gameWorldEvents.Count + gameDecisionEvents.Count;
-    
+
     // variables to control display of events
     private int EventsPassed { get; set; } = 0;
     private WorldEventDetail CurrentWorldEvent => gameWorldEvents[EventsPassed];
@@ -69,20 +70,19 @@
         var worldEvents = await http.GetFromJsonAsync<List<WorldEventListItem>>("/api/worldevent");
         var decisionEvents = await http.GetFromJsonAsync<List<DecisionEventListItem>>("/api/decisionevent");
 
-        List<WorldEventDetail> worldEventDetails = new();
-        foreach (var we in worldEvents)
+        var randomWorldEvents = ChooseEvents<WorldEventListItem>(5, worldEvents);
+
+        foreach (var item in randomWorldEvents)
         {
-            worldEventDetails.Add(await http.GetFromJsonAsync<WorldEventDetail>($"/api/worldevent/{we.Id}"));
+            gameWorldEvents.Add(await http.GetFromJsonAsync<WorldEventDetail>($"/api/worldevent/{item.Id}"));
         }
 
-        List<DecisionEventDetail> decisionEventDetails = new();
-        foreach (var de in decisionEvents)
-        {
-            decisionEventDetails.Add(await http.GetFromJsonAsync<DecisionEventDetail>($"/api/decisionevent/{de.Id}"));
-        }
+        var randomDecisionEvents = ChooseEvents<DecisionEventListItem>(5, decisionEvents);
 
-        gameWorldEvents = ChooseEvents<WorldEventDetail>(5, worldEventDetails);
-        gameDecisionEvents = ChooseEvents<DecisionEventDetail>(5, decisionEventDetails);
+        foreach (var item in randomDecisionEvents)
+        {
+            gameDecisionEvents.Add(await http.GetFromJsonAsync<DecisionEventDetail>($"/api/decisionevent/{item.Id}"));
+        }
     }
 
     private void CycleNextEvent()
@@ -116,28 +116,35 @@
     }
 
     /// <summary>
+    /// Choose an amount of unique, random values from a number (total) of integers.
+    /// </summary>
+    private List<int> ChooseRandomIndices(int amount, int total)
+    {
+        if (amount <= 0 || amount > total) return new();
+
+        var result = new List<int>();
+        var RNG = new Random();
+        for (int i = 0; i < amount; i++)
+        {
+            int index = RNG.Next(total);
+            while (result.Contains<int>(index))
+            {
+                index = RNG.Next(total);
+            }
+            result.Add(index);
+        }
+
+        return result;
+    }
+
+    /// <summary>
     /// Choose a certain number of unique, random members from a List of type T.
     /// </summary>
     private List<T> ChooseEvents<T>(int amount, List<T> values)
     {
-        // Bounds-checking 'amount' argument
-        if (amount > values.Count) amount = values.Count;
-        if (amount <= 0) return new List<T>();
+        var indices = ChooseRandomIndices(amount, values.Count);
 
-        // Get unique, random indices within 'values' and add them to a List<int>
-        List<int> indices = new();
-        var RNG = new Random();
-        for (int i = 0; i < amount; i++)
-        {
-            int index = RNG.Next(values.Count);
-            while (indices.Contains(index))
-            {
-                index = RNG.Next(values.Count);
-            }
-            indices.Add(index);
-        }
-
-        // Add random values (found at each random index) to result
+        // add values (found at each random index) to result
         List<T> result = new();
         foreach (var i in indices)
         {
