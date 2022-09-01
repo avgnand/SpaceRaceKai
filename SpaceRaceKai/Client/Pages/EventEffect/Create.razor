@@ -3,7 +3,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Create</h3>
+<h3>Create New Event Effect</h3>
 
 @if (errorMessage != null)
 {
@@ -11,25 +11,25 @@
 }
 else
 {
-    <div>
+    <div class="container-md" style="width: 20rem;">
         <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Population Change</label>
                 <InputNumber @bind-Value="model.PopulationChange" />
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Approval Change</label>
                 <InputNumber @bind-Value="model.ApprovalChange" />
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Tech Change</label>
                 <InputNumber @bind-Value="model.TechChange" />
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Industry Change</label>
                 <InputNumber @bind-Value="model.IndustryChange" />
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Wealth Change</label>
                 <InputNumber @bind-Value="model.WealthChange" />
             </div>

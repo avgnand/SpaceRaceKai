@@ -5,7 +5,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Create</h3>
+<h3>Create New World Event</h3>
 
 @if (errorMessage != null)
 {
@@ -13,17 +13,19 @@
 }
 else
 {
-    <div>
+    <div class="container-md" style="width: 20rem;">
+        <h6>Note</h6>
+        <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
         <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Name</label>
                 <InputText @bind-Value="model.Name" />
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Description</label>
                 <InputText @bind-Value="model.Description" />
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Planet Type</label>
                 <InputSelect @bind-Value="model.PlanetTypeId">
                     <option value="-1">Select a Planet Type</option>
@@ -33,9 +35,8 @@ else
                     }
                 </InputSelect>
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
                 <label>Event Effect</label>
-                <p>Effect changes are displayed in the order "PAWTI" - Population, Approval, Wealth, Tech, and Industry</p>
                 <InputSelect @bind-Value="model.EventEffectId">
                     <option value="-1">Select an Effect</option>
                     @foreach (var item in eventEffects)
