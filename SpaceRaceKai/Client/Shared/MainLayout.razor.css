@@ -9,12 +9,12 @@ main {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-color: rgb(25,25,55);
 }
 
 .top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
+    background-color: rgb(200,200,220);
+    border-bottom: 1px solid black;
     justify-content: flex-end;
     height: 3.5rem;
     display: flex;
@@ -22,13 +22,14 @@ main {
 }
 
     .top-row ::deep a, .top-row ::deep .btn-link {
+        color: rgb(50,100,125);
         white-space: nowrap;
         margin-left: 1.5rem;
         text-decoration: none;
     }
 
     .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
-        text-decoration: underline;
+        color: white;
     }
 
     .top-row ::deep a:first-child {
