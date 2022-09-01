@@ -12,7 +12,7 @@
     <h3>@errorMessage</h3>
 }
 
-<div>
+<div class="container">
     @if (EventsPassed < EventTotal/2)
     {
         <WorldEventPanel Model=@(CurrentWorldEvent) />
@@ -21,17 +21,22 @@
     {
         <DecisionEventPanel Model=@(CurrentDecisionEvent) />
         <div>
-            <button @onclick="ChooseOptionA">Option A</button>
-            <button @onclick="ChooseOptionB">Option B</button>
+            <button class="btn btn-primary" @onclick="ChooseOptionA">Option A</button>
+            <button class="btn btn-primary" @onclick="ChooseOptionB">Option B</button>
         </div>
     }
-    @if (EventsPassed < EventTotal/2 && EventsPassed < EventTotal)
+    @if (EventsPassed < EventTotal/2)
     {
-        <button @onclick="CycleNextEvent">Next</button>
+        <button class="btn btn-primary" @onclick="CycleNextEvent">Next</button>
     }
     else if (EventsPassed == EventTotal)
     {
-        <button @onclick="FinishGame">Finish</button>
+        <div class="container">
+            <p>
+                Press "Finish" to see the changes made to your colony.
+            </p>
+            <button class="btn btn-primary" @onclick="FinishGame">Finish</button>
+        </div>
     }
 </div>
 
@@ -42,16 +47,17 @@
     private ColonyDetail userColony { get; set; } = new();
     private ColonyEdit postGameColony { get; set; } = new();
 
-    // all world events are shown first, then decision events
+    // lists of events used in the current game
     private List<WorldEventDetail> gameWorldEvents = new();
     private List<DecisionEventDetail> gameDecisionEvents = new();
 
-    // list of effects of events chosen by player
+    // list of event effects chosen by player
     private List<EventEffectDetail> gameDecisionEffects { get; set; } = new();
 
-    private int EventsPassed { get; set; } = 0;
     private int EventTotal => gameWorldEvents.Count + gameDecisionEvents.Count;
-
+    
+    // variables to control display of events
+    private int EventsPassed { get; set; } = 0;
     private WorldEventDetail CurrentWorldEvent => gameWorldEvents[EventsPassed];
     private DecisionEventDetail CurrentDecisionEvent => gameDecisionEvents[EventsPassed % (EventTotal / 2)];
 
@@ -93,8 +99,7 @@
         postGameColony.PlanetTypeId = userColony.PlanetTypeId;
         postGameColony.CompletedPlaythrough = true;
 
-        // TODO: increment colony playthroughs by one
-
+        // add game changes to model
         TallyWorldEventChanges();
         TallyDecisionEventChanges();
 
