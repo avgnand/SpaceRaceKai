@@ -3,7 +3,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Delete Colony #@Model.Id-@Model.Name</h3>
+<h3>Delete Colony: @Model.Name</h3>
 
 @if (Message != null)
 {
@@ -11,11 +11,15 @@
 }
 @if (Model != null)
 {
-    <div>
-        <p><strong>Details</strong></p>
-        <p>User: @Model.UserEmail [ID: @Model.UserId]</p>
-        <p>Planet Type: @Model.PlanetTypeName</p>
-        <p>Playthroughs: @Model.Playthroughs</p>
+    <div class="container">
+        <div class="card">
+            <h6 class="card-header">Details</h6>
+            <div class="card-body">
+                <p>User: @Model.UserEmail [ID: @Model.UserId]</p>
+                <p>Planet Type: @Model.PlanetTypeName</p>
+                <p>Playthroughs: @Model.Playthroughs</p>
+            </div>
+        </div>
         <table class="table table-sm table-bordered">
             <thead class="table-light">
                 <tr>
@@ -37,8 +41,8 @@
             </tbody>
         </table>
         <div>
-            <a href="/colony">Return to Colonies</a>
-            <a href="#" @onclick="HandleClick">DELETE</a>
+            <a href="/colony" class="btn btn-primary">Return to Colonies</a>
+            <a href="#" class="btn btn-danger" @onclick="HandleClick">DELETE</a>
         </div>
     </div>
 }

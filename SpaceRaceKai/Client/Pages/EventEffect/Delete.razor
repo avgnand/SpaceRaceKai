@@ -3,7 +3,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Delete</h3>
+<h3>Delete Event Effect</h3>
 
 @if (Message != null)
 {
@@ -11,8 +11,7 @@
 }
 @if (model != null)
 {
-    <div>
-        <p><strong>Details</strong></p>
+    <div class="container">
         <EventEffectTable model=@model />
         <div>
             <a href="/eventeffect">Return to Event Effects</a>

@@ -3,7 +3,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Delete</h3>
+<h3>Delete World Event</h3>
 
 @if (Message != null)
 {
@@ -15,8 +15,8 @@
         <p><strong>Details</strong></p>
         <WorldEventTable Model=@model />
         <div>
-            <a href="/worldevent">Return to World Events</a>
-            <a href="#" @onclick="HandleClick">DELETE</a>
+            <a href="/worldevent" class="btn btn-primary">Return to World Events</a>
+            <a href="#" class="btn btn-danger" @onclick="HandleClick">DELETE</a>
         </div>
     </div>
 }

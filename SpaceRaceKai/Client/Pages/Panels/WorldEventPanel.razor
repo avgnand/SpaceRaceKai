@@ -1,15 +1,17 @@
 ﻿@using SpaceRaceKai.Shared.Models.WorldEvent
-<div>
-    <h4>@Model.Name</h4>
-    <p>@Model.Description</p>
-    <h6>Effects:</h6>
-    <ul>
-        <li>Population: @ShowSignedNumber(Model.PopulationChange)@Model.PopulationChange</li>
-        <li>Approval: @ShowSignedNumber(Model.ApprovalChange)@Model.ApprovalChange</li>
-        <li>Wealth: @ShowSignedNumber(Model.WealthChange)@Model.WealthChange</li>
-        <li>Tech: @ShowSignedNumber(Model.TechChange)@Model.TechChange</li>
-        <li>Industry: @ShowSignedNumber(Model.IndustryChange)@Model.IndustryChange</li>
-    </ul>
+<div class="card">
+    <h4 class="card-header">@Model.Name</h4>
+    <div class="card-body">
+        <p>@Model.Description</p>
+        <h6>Effects:</h6>
+        <ul class="list-group">
+            <li class="list-group-item">Population: @ShowSignedNumber(Model.PopulationChange)@Model.PopulationChange</li>
+            <li class="list-group-item">Approval: @ShowSignedNumber(Model.ApprovalChange)@Model.ApprovalChange</li>
+            <li class="list-group-item">Wealth: @ShowSignedNumber(Model.WealthChange)@Model.WealthChange</li>
+            <li class="list-group-item">Tech: @ShowSignedNumber(Model.TechChange)@Model.TechChange</li>
+            <li class="list-group-item">Industry: @ShowSignedNumber(Model.IndustryChange)@Model.IndustryChange</li>
+        </ul>
+    </div>
 </div>
 
 @code {

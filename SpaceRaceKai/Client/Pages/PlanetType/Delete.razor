@@ -3,7 +3,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Delete Planet Type #@PlanetType.Id-@PlanetType.Name</h3>
+<h3>Delete Planet Type: @PlanetType.Name</h3>
 
 @if (Message != null)
 {
@@ -11,13 +11,17 @@
 }
 @if (PlanetType != null)
 {
-    <div>
-        <p><strong>Details</strong></p>
-        <p>Temperature Rating: @PlanetType.TemperatureRating degrees</p>
-        <p>Land Cover: @PlanetType.LandCover% of planet's surface</p>
-        <div>
-            <a href="/planettype">Return to Planet Types</a>
-            <a href="#" @onclick="HandleClick">DELETE</a>
+    <div class="container">
+        <div class="card">
+            <h6 class="card-header">Details</h6>
+            <div class="card-body">
+                <p>Temperature Rating: @PlanetType.TemperatureRating degrees</p>
+                <p>Land Cover: @PlanetType.LandCover% of planet's surface</p>
+            </div>
+            <div>
+                <a href="/planettype" class="btn btn-primary">Return to Planet Types</a>
+                <a href="#" class="btn btn-danger" @onclick="HandleClick">DELETE</a>
+            </div>
         </div>
     </div>
 }

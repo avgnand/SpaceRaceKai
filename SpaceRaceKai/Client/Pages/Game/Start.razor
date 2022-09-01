@@ -20,14 +20,16 @@
     else if (EventsPassed >= EventTotal/2 && EventsPassed < EventTotal)
     {
         <DecisionEventPanel Model=@(CurrentDecisionEvent) />
-        <div>
+        <div class="d-flex justify-content-evenly py-3">
             <button class="btn btn-primary" @onclick="ChooseOptionA">Option A</button>
             <button class="btn btn-primary" @onclick="ChooseOptionB">Option B</button>
         </div>
     }
     @if (EventsPassed < EventTotal/2)
     {
-        <button class="btn btn-primary" @onclick="CycleNextEvent">Next</button>
+        <div class="container justify-content-around">
+            <button class="btn btn-primary" @onclick="CycleNextEvent">Next</button>
+        </div>
     }
     else if (EventsPassed == EventTotal)
     {
@@ -35,11 +37,10 @@
             <p>
                 Press "Finish" to see the changes made to your colony.
             </p>
-            <button class="btn btn-primary" @onclick="FinishGame">Finish</button>
+            <button class="btn btn-success" @onclick="FinishGame">Finish</button>
         </div>
     }
 </div>
-
 
 @code {
     [Parameter]

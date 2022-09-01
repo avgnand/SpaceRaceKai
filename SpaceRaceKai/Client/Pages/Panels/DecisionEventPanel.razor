@@ -1,25 +1,33 @@
 ﻿@using SpaceRaceKai.Shared.Models.DecisionEvent
-<div>
+<div class="container">
     <h4>@Model.Name</h4>
     <p>@Model.Description</p>
     <h6>Choose:</h6>
-    <div>
-        <ul>
-            <li>Population: @ShowSignedNumber(Model.PopulationChangeA)@Model.PopulationChangeA</li>
-            <li>Approval: @ShowSignedNumber(Model.ApprovalChangeA)@Model.ApprovalChangeA</li>
-            <li>Wealth: @ShowSignedNumber(Model.WealthChangeA)@Model.WealthChangeA</li>
-            <li>Tech: @ShowSignedNumber(Model.TechChangeA)@Model.TechChangeA</li>
-            <li>Industry: @ShowSignedNumber(Model.IndustryChangeA)@Model.IndustryChangeA</li>
-        </ul>
-    </div>
-    <div>
-        <ul>
-            <li>Population: @ShowSignedNumber(Model.PopulationChangeB)@Model.PopulationChangeB</li>
-            <li>Approval: @ShowSignedNumber(Model.ApprovalChangeB)@Model.ApprovalChangeB</li>
-            <li>Wealth: @ShowSignedNumber(Model.WealthChangeB)@Model.WealthChangeB</li>
-            <li>Tech: @ShowSignedNumber(Model.TechChangeB)@Model.TechChangeB</li>
-            <li>Industry: @ShowSignedNumber(Model.IndustryChangeB)@Model.IndustryChangeB</li>
-        </ul>
+    <div class="card-group">
+        <div class="card">
+            <p class="card-header">Option A</p>
+            <div class="card-body">
+                <ul class="list-group" style="width: fit-content">
+                    <li class="list-group-item">Population: @DisplayStat(Model.PopulationChangeA)</li>
+                    <li class="list-group-item">Approval: @DisplayStat(Model.ApprovalChangeA)</li>
+                    <li class="list-group-item">Wealth: @DisplayStat(Model.WealthChangeA)</li>
+                    <li class="list-group-item">Tech: @DisplayStat(Model.TechChangeA)</li>
+                    <li class="list-group-item">Industry: @DisplayStat(Model.IndustryChangeA)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <p class="card-header">Option B</p>
+            <div class="card-body">
+                <ul class="list-group" style="width: fit-content">
+                    <li class="list-group-item">Population: @DisplayStat(Model.PopulationChangeB)</li>
+                    <li class="list-group-item">Approval: @DisplayStat(Model.ApprovalChangeB)</li>
+                    <li class="list-group-item">Wealth: @DisplayStat(Model.WealthChangeB)</li>
+                    <li class="list-group-item">Tech: @DisplayStat(Model.TechChangeB)</li>
+                    <li class="list-group-item">Industry: @DisplayStat(Model.IndustryChangeB)</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 @code {
@@ -29,5 +37,10 @@
     private char ShowSignedNumber(int number)
     {
         return (number >= 0) ? '+' : ' ';
+    }
+
+    private string DisplayStat(int value)
+    {
+        return ShowSignedNumber(value).ToString() + value.ToString();
     }
 }
